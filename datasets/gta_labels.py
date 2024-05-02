@@ -61,5 +61,13 @@ class GTA5Labels_TaskCV2017(BaseGTALabels):
         ret = [label.ID for label in self.list_]
         return ret
     
+    
+    def trans_label_map(self):
+        label_map_dict = {}
+        for x in self.list_:
+            label_map_dict[x.color] = x.ID
+
+        return label_map_dict    
+    
 # references:
 # https://github.com/sarrrrry/PyTorchDL_GTA5/blob/master/pytorchdl_gta5/labels.py    
