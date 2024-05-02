@@ -11,7 +11,7 @@ class GTA5(Dataset):
 
     class PathPair_ImgAndLabel:
         IMG_DIR_NAME = "images"
-        TRAINIDS_DIR_NAME = "trainIdsLables"
+        TRAINIDS_DIR_NAME = "trainIdsLabels"
 
         def __init__(self, root):
             self.root = root
@@ -51,16 +51,13 @@ class GTA5(Dataset):
         if isPath:
             return img_path, tid_path
 
-        img = torch.tensor(self.read_img(img_path))
-        tid = torch.tensor(self.read_img(tid_path))
+        img = np.array(Image.open(str(img_path)).convert('RGB'))
+        img = torch.tensor(img)
+
+        tid = np.array(Image.open(str(tid_path)))
+        tid = torch.tensor(tid)
 
         if self.transform:
             img = self.transform(img)
             
         return img, tid
-
-    @staticmethod
-    def read_img(path):
-        img = Image.open(str(path)).convert('RGB')
-        img = np.array(img)
-        return img
