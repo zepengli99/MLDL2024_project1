@@ -20,22 +20,23 @@ class CityscapesDataset(Dataset):
         for folder in self.image_folders:
             images_in_folder = os.listdir(os.path.join(self.image_dir, folder))
             self.images.extend(images_in_folder)
-        
+
     def __len__(self):
         return len(self.images)
-    
-    def __getitem__(self, idx): 
+
+    def __getitem__(self, idx):
         folder_name = self.images[idx].split('_')[0]
         img_name = os.path.join(self.image_dir, folder_name, self.images[idx])
         label_name = os.path.join(self.label_dir, folder_name, self.images[idx].replace('leftImg8bit', 'gtFine_labelTrainIds'))
-        
-        image = Image.open(img_name).convert('RGB')
-        label = torch.tensor(np.array(Image.open(label_name)))
-        
+
+        image = np.array(Image.open(img_name).convert('RGB'))[::2,::2]
+        # image = torch.tensor(image)
+        label = np.array(Image.open(label_name))[::2,::2]
+        label = torch.tensor(label).long()
         # This code need to updated.
-        # if self.transform:
-        #     image = self.transform(image)
-        
+        if self.transform:
+            image = self.transform(image)
+
         return image, label
 
 # An example about how to use this class to load Cityspaces dataset
