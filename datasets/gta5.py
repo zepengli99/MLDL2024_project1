@@ -44,8 +44,11 @@ class GTA5(Dataset):
         self.target_transform = target_transform
         self.paths = self.PathPair_ImgAndLabel(root=self.root)
 
-    def classes(self):
+    def classes_ids(self):
         return self.label_map.support_id_list
+
+    def classes(self):
+        return self.label_map.label_list
 
     def __len__(self):
         return len(self.paths)
