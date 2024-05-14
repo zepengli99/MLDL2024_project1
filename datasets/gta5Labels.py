@@ -61,6 +61,31 @@ class GTA5Labels_TaskCV2017(BaseGTALabels):
         ret = [label.ID for label in self.list_]
         return ret
     
+    @property
+    def label_list(self):
+        list = [
+            "road",
+            "sidewalk",
+            "building",
+            "wall",
+            "fence",
+            "pole",
+            "light",
+            "sign",
+            "vegetation",
+            "terrain",
+            "sky",
+            "person",
+            "rider",
+            "car",
+            "truck",
+            "bus",
+            "train",
+            "motocycle",
+            "bicycle",
+        ]
+        return self.list
+    
     def trans_label_map(self):
         label_map_dict = {}
         for x in self.list_:
