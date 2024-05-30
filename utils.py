@@ -32,3 +32,11 @@ def fast_hist(a, b, n):
 def per_class_iou(hist):
     epsilon = 1e-5
     return (np.diag(hist)) / (hist.sum(1) + hist.sum(0) - np.diag(hist) + epsilon)
+
+
+def total_hist(outputs, labels, num_classes):
+    hist = 0
+    for i in range(len(outputs)):
+        output, label = outputs[i].cpu().detach().numpy().reshape(-1,), labels[i].cpu().detach().numpy().reshape(-1,)
+        hist += fast_hist(label, output, num_classes)
+    return hist
