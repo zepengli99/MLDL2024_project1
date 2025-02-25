@@ -8,14 +8,14 @@ from torchvision.transforms import functional as F
 from torchvision import transforms
 
 
-class GTA5(Dataset):
+class GTA5_aug2(Dataset):
 
     class PathPair_ImgAndLabel:
-        IMG_DIR_NAME = "images"
-        TRAINIDS_DIR_NAME = "trainIdsLabels"
 
-        def __init__(self, root):
+        def __init__(self, root, img_dir_name="images", trainids_dir_name="trainIdsLabels"):
             self.root = root
+            self.IMG_DIR_NAME = img_dir_name
+            self.TRAINIDS_DIR_NAME = trainids_dir_name            
             self.img_paths = self.create_imgpath_list()
             self.tid_paths = self.create_tidpath_list()
 
@@ -29,20 +29,19 @@ class GTA5(Dataset):
 
         def create_imgpath_list(self):
             img_dir = os.path.join(self.root, self.IMG_DIR_NAME)
-            img_paths = sorted(os.listdir(img_dir))
+            img_paths = os.listdir(img_dir)
             return img_paths
 
         def create_tidpath_list(self):
             tid_dir = os.path.join(self.root, self.TRAINIDS_DIR_NAME)
-            tid_paths = sorted(os.listdir(tid_dir))
+            tid_paths = os.listdir(tid_dir)
             return tid_paths
 
-    def __init__(self, root, transform=None, target_transform=None):
+    def __init__(self, root, transform=None, img_dir_name="images", trainids_dir_name="trainIdsLabels"):
         self.root = root
         self.label_map = GTA5Labels_TaskCV2017()
         self.transform = transform
-        self.target_transform = target_transform
-        self.paths = self.PathPair_ImgAndLabel(root=self.root)
+        self.paths = self.PathPair_ImgAndLabel(root=self.root, img_dir_name = img_dir_name, trainids_dir_name = trainids_dir_name)
     
     @property
     def classes_ids(self):
@@ -64,7 +63,7 @@ class GTA5(Dataset):
 
         img = Image.open(str(img_path)).convert('RGB')
         tid = Image.open(str(tid_path))
-
+        
         if self.transform:
             img = self.transform[0](img)
             tid = self.transform[1](tid)
